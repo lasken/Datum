@@ -11,15 +11,12 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════
-     SCREEN 1 — LOGIN
-═══════════════════════════════════════════════════ -->
 <div class="screen active" id="screen-login">
   <div class="login-wrap">
     <div class="login-card">
       <div class="login-logo">
         <div class="logo-mark"><i class="fa-solid fa-layer-group"></i></div>
-        <div class="login-brand">Task<span>Flow</span></div>
+        <div class="login-brand">Da<span>tum</span></div>
       </div>
       <div class="login-sub">Sign in to your workspace</div>
 
@@ -47,13 +44,8 @@
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SCREEN 2 — ADMIN DASHBOARD
-═══════════════════════════════════════════════════ -->
 <div class="screen" id="screen-admin">
 
-  <!-- Header -->
   <header>
     <div class="logo">
       <div class="logo-mark"><i class="fa-solid fa-layer-group"></i></div>
@@ -76,7 +68,6 @@
 
   <div class="main">
 
-    <!-- Sidebar -->
     <nav class="sidebar">
       <div class="sidebar-label">Tasks</div>
       <div class="nav-item active" data-view="all" onclick="adminNav('all',this)">
@@ -106,10 +97,8 @@
       </div>
     </nav>
 
-    <!-- Content -->
     <main class="content">
 
-      <!-- ALL TASKS -->
       <div class="view active" id="view-all">
         <div class="page-header">
           <div>
@@ -155,7 +144,6 @@
         <div class="task-list" id="list-all"></div>
       </div>
 
-      <!-- PENDING -->
       <div class="view" id="view-pending">
         <div class="page-header"><div>
           <div class="page-title">Pending Tasks</div>
@@ -164,7 +152,6 @@
         <div class="task-list" id="list-pending"></div>
       </div>
 
-      <!-- ONGOING -->
       <div class="view" id="view-ongoing">
         <div class="page-header"><div>
           <div class="page-title">Ongoing Tasks</div>
@@ -173,7 +160,6 @@
         <div class="task-list" id="list-ongoing"></div>
       </div>
 
-      <!-- COMPLETED -->
       <div class="view" id="view-done">
         <div class="page-header"><div>
           <div class="page-title">Completed Tasks</div>
@@ -182,7 +168,6 @@
         <div class="task-list" id="list-done"></div>
       </div>
 
-      <!-- MEMBERS -->
       <div class="view" id="view-members">
         <div class="page-header">
           <div>
@@ -196,7 +181,6 @@
         <div class="member-grid" id="member-grid"></div>
       </div>
 
-      <!-- HISTORY -->
       <div class="view" id="view-history">
         <div class="page-header">
           <div>
@@ -214,10 +198,6 @@
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SCREEN 3 — MEMBER DASHBOARD
-═══════════════════════════════════════════════════ -->
 <div class="screen" id="screen-member">
 
   <header>
@@ -301,9 +281,6 @@
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════
-     MODAL — ADD / EDIT TASK
-═══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-task" onclick="closeModalOutside(event,'modal-task')">
   <div class="modal">
     <div class="modal-header">
@@ -363,9 +340,6 @@
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════
-     MODAL — ADD MEMBER
-═══════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-member" onclick="closeModalOutside(event,'modal-member')">
   <div class="modal">
     <div class="modal-header">
@@ -401,15 +375,9 @@
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════
-     TOAST NOTIFICATION
-═══════════════════════════════════════════════════ -->
 <div class="toast" id="toast"></div>
 
 
-<!-- ═══════════════════════════════════════════════════
-     LOADING OVERLAY
-═══════════════════════════════════════════════════ -->
 <div class="loading-overlay active" id="loading-overlay">
   <div class="spinner"></div>
 </div>
