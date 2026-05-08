@@ -1,30 +1,6 @@
-/* ════════════════════════════════════════════════════════
-   TASKFLOW v2 — app.js
-   Sections:
-   1.  CONFIG & SUPABASE
-   2.  STATE
-   3.  HELPERS
-   4.  INIT
-   5.  AUTH — LOGIN / LOGOUT
-   6.  CLOCK
-   7.  ADMIN — RENDER TASKS
-   8.  ADMIN — TASK ACTIONS
-   9.  ADMIN — MEMBERS
-   10. ADMIN — ACTIVITY LOG
-   11. ADMIN — NAV
-   12. MEMBER — RENDER & NAV
-   13. MEMBER — TASK ACTIONS
-   14. MODAL HELPERS
-   15. FILTER CHIPS
-   16. TOAST
-════════════════════════════════════════════════════════ */
-
-
-/* ── 1. CONFIG & SUPABASE ──────────────────────────── */
 const SUPABASE_URL  = 'https://pphuibtoaeqtoxfvdfyl.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBwaHVpYnRvYWVxdG94ZnZkZnlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgyMjgwOTAsImV4cCI6MjA5MzgwNDA5MH0.nviWHxwCfjy0_8eZXPDnFQ7Y0sef41__VamgeZhiiZs';
 
-// Lightweight Supabase REST wrapper
 const db = {
   async query(table, params = '') {
     const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${params}`, {
@@ -81,8 +57,7 @@ const db = {
 };
 
 
-/* ── 2. STATE ──────────────────────────────────────── */
-let currentUser   = null;   // { id, username, display_name, role, whatsapp_number }
+let currentUser   = null;   
 let tasks         = [];
 let members       = [];
 let activityLog   = [];
@@ -90,7 +65,6 @@ let editingTaskId = null;
 let currentPriority = 'all';
 
 
-/* ── 3. HELPERS ────────────────────────────────────── */
 function $(id)   { return document.getElementById(id); }
 function fmtDate(ts) {
   if (!ts) return '';
@@ -106,7 +80,6 @@ function fmtDateStr(s) {
   return new Date(y, m - 1, d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 function fmtTimeStr(s) {
-  // "HH:MM:SS" or "HH:MM" → "HH:MM"
   if (!s) return '';
   return s.slice(0, 5);
 }
@@ -136,7 +109,7 @@ function timeAgo(ts) {
 }
 function isOnline(ts) {
   if (!ts) return false;
-  return Date.now() - new Date(ts).getTime() < 5 * 60 * 1000; // 5 min
+  return Date.now() - new Date(ts).getTime() < 5 * 60 * 1000; 
 }
 function groupByDay(list) {
   const groups = {};
@@ -219,9 +192,7 @@ function showView(viewId, navParent) {
 }
 
 
-/* ── 4. INIT ───────────────────────────────────────── */
 async function init() {
-  // Restore session from localStorage
   const saved = localStorage.getItem('tf_user');
   if (saved) {
     currentUser = JSON.parse(saved);
@@ -244,11 +215,9 @@ async function init() {
   }
   hideLoading();
 
-  // Enter key on login
   $('login-pin').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
   $('login-username').addEventListener('keydown', e => { if (e.key === 'Enter') $('login-pin').focus(); });
 
-  // Filter chips
   document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.addEventListener('click', function () {
       currentPriority = this.dataset.priority || 'all';
@@ -258,7 +227,6 @@ async function init() {
     });
   });
 
-  // Esc closes modals
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       closeModal('modal-task');
@@ -286,7 +254,6 @@ function hideLoading() {
 }
 
 
-/* ── 5. AUTH ───────────────────────────────────────── */
 async function doLogin() {
   const username = $('login-username').value.trim().toLowerCase();
   const pin      = $('login-pin').value.trim();
@@ -357,7 +324,6 @@ function doLogout() {
 }
 
 
-/* ── 6. CLOCK ──────────────────────────────────────── */
 function startClock() {
   function tick() {
     const now  = new Date();
@@ -374,7 +340,6 @@ function startClock() {
 }
 
 
-/* ── 7. ADMIN — RENDER TASKS ───────────────────────── */
 function taskCard(t, isAdmin = true) {
   const isDone   = t.status === 'done';
   const overdue  = isOverdue(t);
@@ -386,7 +351,6 @@ function taskCard(t, isAdmin = true) {
   if (t.due_date)   datesHtml += `<div class="task-date"><i class="fa-regular fa-calendar"></i> Due: ${fmtDateStr(t.due_date)}</div>`;
   if (isDone && t.completed_at) datesHtml += `<div class="task-date done-at"><i class="fa-solid fa-circle-check"></i> Done: ${fmtDate(t.completed_at)} ${fmtTime(t.completed_at)}</div>`;
 
-  // WhatsApp send button
   let waHtml = '';
   if (isAdmin && member && member.whatsapp_number) {
     const msg = buildWaMessage(t, member);
@@ -395,7 +359,6 @@ function taskCard(t, isAdmin = true) {
     </a>`;
   }
 
-  // Admin shows edit/delete; member only shows status change
   let actionsHtml = '';
   if (isAdmin) {
     actionsHtml = `
@@ -483,7 +446,6 @@ function updateAdminCounts() {
 }
 
 
-/* ── 8. ADMIN — TASK ACTIONS ───────────────────────── */
 function openTaskModal() {
   editingTaskId = null;
   $('task-modal-title').textContent = 'New Task';
@@ -584,7 +546,6 @@ async function deleteTask(id) {
 }
 
 
-/* ── 9. ADMIN — MEMBERS ────────────────────────────── */
 function renderMembers() {
   const grid = $('member-grid');
   if (!members.length) {
@@ -689,7 +650,6 @@ async function deleteMember(id, username) {
 }
 
 
-/* ── 10. ADMIN — ACTIVITY LOG ──────────────────────── */
 async function logActivity(taskId, action, performedBy, note = '') {
   try {
     const [entry] = await db.insert('activity_log', {
@@ -746,7 +706,6 @@ async function clearHistory() {
 }
 
 
-/* ── 11. ADMIN — NAV ───────────────────────────────── */
 function adminNav(view, el) {
   document.querySelectorAll('#screen-admin .nav-item').forEach(n => n.classList.remove('active'));
   el.classList.add('active');
@@ -757,7 +716,6 @@ function adminNav(view, el) {
 }
 
 
-/* ── 12. MEMBER — RENDER & NAV ─────────────────────── */
 function renderMemberTasks() {
   const myTasks = tasks.filter(t => t.assigned_to === currentUser.username);
   const total   = myTasks.length;
@@ -797,7 +755,6 @@ function memberNav(view, el) {
 }
 
 
-/* ── 13. MEMBER — TASK ACTIONS ─────────────────────── */
 async function memberUpdateStatus(id, newStatus) {
   const t = tasks.find(x => x.id === id);
   if (!t) return;
@@ -815,7 +772,6 @@ async function memberUpdateStatus(id, newStatus) {
 }
 
 
-/* ── 14. MODAL HELPERS ─────────────────────────────── */
 function openModal(id)  { $(id).classList.add('open'); }
 function closeModal(id) { $(id).classList.remove('open'); }
 function closeModalOutside(e, id) {
@@ -823,11 +779,8 @@ function closeModalOutside(e, id) {
 }
 
 
-/* ── 15. FILTER CHIPS ──────────────────────────────── */
-// Bound in init()
 
 
-/* ── 16. TOAST ─────────────────────────────────────── */
 let toastTimer;
 function showToast(msg) {
   const el = $('toast');
@@ -838,5 +791,4 @@ function showToast(msg) {
 }
 
 
-/* ── BOOT ──────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', init);
