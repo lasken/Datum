@@ -371,10 +371,11 @@ function taskCard(t, isAdmin = true) {
         actionsHtml = `<button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="memberUpdateStatus('${t.id}','ongoing')">
           <i class="fa-solid fa-rotate"></i> Start
         </button>`;
+      } else if (t.status === 'ongoing') {
+        actionsHtml = `<button class="btn btn-green" style="font-size:12px;padding:5px 10px" onclick="memberUpdateStatus('${t.id}','done')">
+          <i class="fa-solid fa-circle-check"></i> Done
+        </button>`;
       }
-      actionsHtml += `<button class="btn btn-green" style="font-size:12px;padding:5px 10px" onclick="memberUpdateStatus('${t.id}','done')">
-        <i class="fa-solid fa-circle-check"></i> Done
-      </button>`;
     } else {
       actionsHtml = `<button class="btn btn-ghost" style="font-size:12px;padding:5px 10px" onclick="memberUpdateStatus('${t.id}','pending')">
         <i class="fa-solid fa-rotate-left"></i> Undo
