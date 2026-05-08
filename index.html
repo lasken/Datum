@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Datum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 1 — LOGIN
+═══════════════════════════════════════════════════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo-mark"><i class="fa-solid fa-layer-group"></i></div>
+        <div class="login-brand">Task<span>Flow</span></div>
+      </div>
+      <div class="login-sub">Sign in to your workspace</div>
+
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user input-icon"></i>
+          <input class="form-input" id="login-username" placeholder="Enter your username" autocomplete="off" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">PIN</label>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock input-icon"></i>
+          <input class="form-input" id="login-pin" type="password" placeholder="4-digit PIN" maxlength="4" />
+        </div>
+      </div>
+
+      <div class="login-error" id="login-error"></div>
+
+      <button class="btn btn-primary btn-full" id="login-btn" onclick="doLogin()">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Sign In
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 2 — ADMIN DASHBOARD
+═══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-admin">
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <div class="logo-mark"><i class="fa-solid fa-layer-group"></i></div>
+      <div class="logo-name">Da<span>tum</span></div>
+    </div>
+    <div class="header-meta">
+      <div class="date-badge" id="live-date-admin">
+        <span id="date-text-admin"></span>
+        <span id="time-text-admin"></span>
+      </div>
+      <button class="btn btn-primary" onclick="openTaskModal()">
+        <i class="fa-solid fa-plus"></i>
+        <span class="btn-label">New Task</span>
+      </button>
+      <button class="icon-btn" onclick="doLogout()" title="Sign out">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="main">
+
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-label">Tasks</div>
+      <div class="nav-item active" data-view="all" onclick="adminNav('all',this)">
+        <i class="fa-solid fa-table-cells-large nav-icon"></i> All Tasks
+        <span class="nav-count" id="cnt-all">0</span>
+      </div>
+      <div class="nav-item" data-view="pending" onclick="adminNav('pending',this)">
+        <i class="fa-regular fa-clock nav-icon"></i> Pending
+        <span class="nav-count" id="cnt-pending">0</span>
+      </div>
+      <div class="nav-item" data-view="ongoing" onclick="adminNav('ongoing',this)">
+        <i class="fa-solid fa-rotate nav-icon"></i> Ongoing
+        <span class="nav-count" id="cnt-ongoing">0</span>
+      </div>
+      <div class="nav-item" data-view="done" onclick="adminNav('done',this)">
+        <i class="fa-solid fa-circle-check nav-icon"></i> Completed
+        <span class="nav-count" id="cnt-done">0</span>
+      </div>
+      <div class="sidebar-label">Team</div>
+      <div class="nav-item" data-view="members" onclick="adminNav('members',this)">
+        <i class="fa-solid fa-users nav-icon"></i> Members
+        <span class="nav-count" id="cnt-members">0</span>
+      </div>
+      <div class="sidebar-label">History</div>
+      <div class="nav-item" data-view="history" onclick="adminNav('history',this)">
+        <i class="fa-solid fa-timeline nav-icon"></i> Activity Log
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="content">
+
+      <!-- ALL TASKS -->
+      <div class="view active" id="view-all">
+        <div class="page-header">
+          <div>
+            <div class="page-title">All Tasks</div>
+            <div class="page-sub" id="sub-all">Track every task across your team</div>
+          </div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-card s-total">
+            <div class="stat-label"><i class="fa-solid fa-list-check"></i> Total</div>
+            <div class="stat-val" id="s-total">0</div>
+          </div>
+          <div class="stat-card s-done">
+            <div class="stat-label"><i class="fa-solid fa-circle-check"></i> Completed</div>
+            <div class="stat-val" id="s-done">0</div>
+          </div>
+          <div class="stat-card s-active">
+            <div class="stat-label"><i class="fa-solid fa-rotate"></i> Ongoing</div>
+            <div class="stat-val" id="s-active">0</div>
+          </div>
+          <div class="stat-card s-pending">
+            <div class="stat-label"><i class="fa-regular fa-clock"></i> Pending</div>
+            <div class="stat-val" id="s-pending">0</div>
+          </div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Overall Completion</span>
+            <span id="progress-pct">0%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        </div>
+        <div class="filters">
+          <div class="filter-chip active" data-priority="all"><i class="fa-solid fa-border-all"></i> All</div>
+          <div class="filter-chip" data-priority="high"><i class="fa-solid fa-circle-exclamation" style="color:var(--red)"></i> High</div>
+          <div class="filter-chip" data-priority="medium"><i class="fa-solid fa-circle-minus" style="color:var(--amber)"></i> Medium</div>
+          <div class="filter-chip" data-priority="low"><i class="fa-solid fa-circle-dot" style="color:var(--green)"></i> Low</div>
+          <div class="search-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search tasks…" id="search-all" oninput="renderAdminTasks()" />
+          </div>
+        </div>
+        <div class="task-list" id="list-all"></div>
+      </div>
+
+      <!-- PENDING -->
+      <div class="view" id="view-pending">
+        <div class="page-header"><div>
+          <div class="page-title">Pending Tasks</div>
+          <div class="page-sub">Tasks not yet started</div>
+        </div></div>
+        <div class="task-list" id="list-pending"></div>
+      </div>
+
+      <!-- ONGOING -->
+      <div class="view" id="view-ongoing">
+        <div class="page-header"><div>
+          <div class="page-title">Ongoing Tasks</div>
+          <div class="page-sub">Tasks currently in progress</div>
+        </div></div>
+        <div class="task-list" id="list-ongoing"></div>
+      </div>
+
+      <!-- COMPLETED -->
+      <div class="view" id="view-done">
+        <div class="page-header"><div>
+          <div class="page-title">Completed Tasks</div>
+          <div class="page-sub">Great work — keep it up!</div>
+        </div></div>
+        <div class="task-list" id="list-done"></div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div class="view" id="view-members">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Team Members</div>
+            <div class="page-sub">Manage your team</div>
+          </div>
+          <button class="btn btn-primary" onclick="openMemberModal()">
+            <i class="fa-solid fa-user-plus"></i> Add Member
+          </button>
+        </div>
+        <div class="member-grid" id="member-grid"></div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="view" id="view-history">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Activity Log</div>
+            <div class="page-sub">Full history of all task events</div>
+          </div>
+          <button class="btn btn-ghost" onclick="clearHistory()">
+            <i class="fa-solid fa-trash-can"></i> Clear Log
+          </button>
+        </div>
+        <div id="history-container"></div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     SCREEN 3 — MEMBER DASHBOARD
+═══════════════════════════════════════════════════ -->
+<div class="screen" id="screen-member">
+
+  <header>
+    <div class="logo">
+      <div class="logo-mark"><i class="fa-solid fa-layer-group"></i></div>
+      <div class="logo-name">Da<span>tum</span></div>
+    </div>
+    <div class="header-meta">
+      <div class="date-badge" id="live-date-member">
+        <span id="date-text-member"></span>
+        <span id="time-text-member"></span>
+      </div>
+      <div class="member-greeting" id="member-greeting"></div>
+      <button class="icon-btn" onclick="doLogout()" title="Sign out">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="main">
+    <nav class="sidebar">
+      <div class="sidebar-label">My Tasks</div>
+      <div class="nav-item active" data-view="my-all" onclick="memberNav('my-all',this)">
+        <i class="fa-solid fa-table-cells-large nav-icon"></i> All
+        <span class="nav-count" id="my-cnt-all">0</span>
+      </div>
+      <div class="nav-item" data-view="my-pending" onclick="memberNav('my-pending',this)">
+        <i class="fa-regular fa-clock nav-icon"></i> Pending
+        <span class="nav-count" id="my-cnt-pending">0</span>
+      </div>
+      <div class="nav-item" data-view="my-ongoing" onclick="memberNav('my-ongoing',this)">
+        <i class="fa-solid fa-rotate nav-icon"></i> Ongoing
+        <span class="nav-count" id="my-cnt-ongoing">0</span>
+      </div>
+      <div class="nav-item" data-view="my-done" onclick="memberNav('my-done',this)">
+        <i class="fa-solid fa-circle-check nav-icon"></i> Completed
+        <span class="nav-count" id="my-cnt-done">0</span>
+      </div>
+    </nav>
+
+    <main class="content">
+      <div class="view active" id="view-my-all">
+        <div class="page-header"><div>
+          <div class="page-title" id="member-page-title">My Tasks</div>
+          <div class="page-sub" id="member-page-sub">Your assigned tasks</div>
+        </div></div>
+        <div class="stats-row">
+          <div class="stat-card s-total">
+            <div class="stat-label"><i class="fa-solid fa-list-check"></i> Total</div>
+            <div class="stat-val" id="my-s-total">0</div>
+          </div>
+          <div class="stat-card s-done">
+            <div class="stat-label"><i class="fa-solid fa-circle-check"></i> Done</div>
+            <div class="stat-val" id="my-s-done">0</div>
+          </div>
+          <div class="stat-card s-active">
+            <div class="stat-label"><i class="fa-solid fa-rotate"></i> Ongoing</div>
+            <div class="stat-val" id="my-s-ongoing">0</div>
+          </div>
+          <div class="stat-card s-pending">
+            <div class="stat-label"><i class="fa-regular fa-clock"></i> Pending</div>
+            <div class="stat-val" id="my-s-pending">0</div>
+          </div>
+        </div>
+        <div class="task-list" id="list-my-all"></div>
+      </div>
+      <div class="view" id="view-my-pending">
+        <div class="page-header"><div><div class="page-title">Pending</div></div></div>
+        <div class="task-list" id="list-my-pending"></div>
+      </div>
+      <div class="view" id="view-my-ongoing">
+        <div class="page-header"><div><div class="page-title">Ongoing</div></div></div>
+        <div class="task-list" id="list-my-ongoing"></div>
+      </div>
+      <div class="view" id="view-my-done">
+        <div class="page-header"><div><div class="page-title">Completed</div></div></div>
+        <div class="task-list" id="list-my-done"></div>
+      </div>
+    </main>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODAL — ADD / EDIT TASK
+═══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-task" onclick="closeModalOutside(event,'modal-task')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="task-modal-title">New Task</div>
+      <button class="icon-btn" onclick="closeModal('modal-task')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Task Title *</label>
+      <input class="form-input" id="f-title" placeholder="What needs to be done?" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <textarea class="form-textarea" id="f-desc" placeholder="Add more details…"></textarea>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Assign To</label>
+        <select class="form-select" id="f-assignee"></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Priority</label>
+        <select class="form-select" id="f-priority">
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="f-status">
+          <option value="pending">Pending</option>
+          <option value="ongoing">Ongoing</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Due Date</label>
+        <input class="form-input" type="date" id="f-due" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label"><i class="fa-regular fa-clock"></i> Start Time</label>
+        <input class="form-input" type="time" id="f-start" />
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-flag-checkered"></i> End Time</label>
+        <input class="form-input" type="time" id="f-end" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-task')"><i class="fa-solid fa-xmark"></i> Cancel</button>
+      <button class="btn btn-primary" onclick="saveTask()"><i class="fa-solid fa-floppy-disk"></i> Save Task</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     MODAL — ADD MEMBER
+═══════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="modal-member" onclick="closeModalOutside(event,'modal-member')">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Add Team Member</div>
+      <button class="icon-btn" onclick="closeModal('modal-member')"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Display Name *</label>
+        <input class="form-input" id="m-name" placeholder="Full name" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Username *</label>
+        <input class="form-input" id="m-username" placeholder="e.g. tolu_ade" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label"><i class="fa-brands fa-whatsapp"></i> WhatsApp Number</label>
+        <input class="form-input" id="m-whatsapp" placeholder="e.g. 2348012345678" />
+      </div>
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-lock"></i> PIN (4 digits)</label>
+        <input class="form-input" id="m-pin" type="password" placeholder="e.g. 1234" maxlength="4" />
+      </div>
+    </div>
+    <div class="member-modal-error" id="member-error"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-member')"><i class="fa-solid fa-xmark"></i> Cancel</button>
+      <button class="btn btn-primary" onclick="saveMember()"><i class="fa-solid fa-user-plus"></i> Add Member</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     TOAST NOTIFICATION
+═══════════════════════════════════════════════════ -->
+<div class="toast" id="toast"></div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     LOADING OVERLAY
+═══════════════════════════════════════════════════ -->
+<div class="loading-overlay active" id="loading-overlay">
+  <div class="spinner"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,684 @@
+/* ════════════════════════════════════════════════════════
+   TASKFLOW v2 — style.css
+   Sections:
+   1.  RESET & VARIABLES
+   2.  BASE
+   3.  SCREENS
+   4.  LOADING OVERLAY
+   5.  LOGIN
+   6.  HEADER
+   7.  SIDEBAR
+   8.  CONTENT / VIEWS
+   9.  BUTTONS
+   10. STAT CARDS
+   11. PROGRESS BAR
+   12. FILTERS & SEARCH
+   13. TASK CARDS
+   14. BADGES
+   15. MEMBER CARDS
+   16. EMPTY STATE
+   17. ACTIVITY LOG
+   18. MODAL / FORM
+   19. TOAST
+   20. RESPONSIVE
+════════════════════════════════════════════════════════ */
+
+
+/* ── 1. RESET & VARIABLES ──────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #0d0e11;
+  --surface:     #13141a;
+  --surface2:    #1a1c25;
+  --surface3:    #22242f;
+  --border:      rgba(255,255,255,0.07);
+  --border2:     rgba(255,255,255,0.13);
+  --text:        #f0f0f5;
+  --text2:       #8a8b9a;
+  --text3:       #5a5b6a;
+  --accent:      #6c63ff;
+  --accent2:     #4c44cc;
+  --accent-glow: rgba(108,99,255,0.15);
+  --green:       #22c55e;
+  --green-bg:    rgba(34,197,94,0.1);
+  --amber:       #f59e0b;
+  --amber-bg:    rgba(245,158,11,0.1);
+  --red:         #ef4444;
+  --red-bg:      rgba(239,68,68,0.1);
+  --blue:        #3b82f6;
+  --blue-bg:     rgba(59,130,246,0.1);
+  --font:        'DM Sans', sans-serif;
+  --mono:        'DM Mono', monospace;
+  --radius:      10px;
+  --radius-lg:   16px;
+}
+
+
+/* ── 2. BASE ───────────────────────────────────────── */
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar            { width: 4px; height: 4px; }
+::-webkit-scrollbar-track      { background: transparent; }
+::-webkit-scrollbar-thumb      { background: var(--surface3); border-radius: 99px; }
+
+input[type="date"],
+input[type="time"] { color-scheme: dark; }
+
+
+/* ── 3. SCREENS ────────────────────────────────────── */
+.screen              { display: none; min-height: 100vh; flex-direction: column; }
+.screen.active       { display: flex; }
+
+
+/* ── 4. LOADING OVERLAY ────────────────────────────── */
+.loading-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.3s;
+}
+.loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--surface3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+
+/* ── 5. LOGIN ──────────────────────────────────────── */
+.login-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--bg);
+  background-image: radial-gradient(ellipse at 60% 0%, rgba(108,99,255,0.12) 0%, transparent 60%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+}
+
+.login-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.login-brand {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.login-brand span { color: var(--accent); }
+
+.login-sub {
+  font-size: 13px;
+  color: var(--text2);
+  margin-bottom: 2rem;
+}
+
+.login-error {
+  font-size: 13px;
+  color: var(--red);
+  background: var(--red-bg);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-bottom: 1rem;
+  display: none;
+}
+.login-error.show { display: block; }
+
+.member-modal-error {
+  font-size: 13px;
+  color: var(--red);
+  background: var(--red-bg);
+  border-radius: var(--radius);
+  padding: 8px 12px;
+  margin-top: 4px;
+  display: none;
+}
+.member-modal-error.show { display: block; }
+
+.input-wrap    { position: relative; }
+.input-icon {
+  position: absolute;
+  left: 12px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3);
+  font-size: 13px;
+}
+.input-wrap .form-input { padding-left: 36px; }
+
+.btn-full { width: 100%; justify-content: center; margin-top: 0.5rem; }
+
+
+/* ── 6. HEADER ─────────────────────────────────────── */
+header {
+  padding: 0 2rem;
+  height: 60px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  position: sticky; top: 0; z-index: 50;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.logo              { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.logo-mark {
+  width: 32px; height: 32px;
+  background: var(--accent);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; color: #fff;
+}
+.logo-name         { font-size: 17px; font-weight: 600; letter-spacing: -0.3px; white-space: nowrap; }
+.logo-name span    { color: var(--accent); }
+
+.header-meta       { display: flex; align-items: center; gap: 10px; min-width: 0; }
+
+.date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  line-height: 1.4;
+}
+
+.member-greeting {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  white-space: nowrap;
+}
+
+.btn-label { display: inline; }
+
+
+/* ── 7. SIDEBAR ────────────────────────────────────── */
+.main    { flex: 1; display: flex; overflow: hidden; }
+
+.sidebar {
+  width: 220px; min-width: 220px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow-y: auto;
+}
+
+.sidebar-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text3);
+  padding: 0 1.25rem;
+  margin: 1rem 0 0.5rem;
+}
+.sidebar-label:first-child { margin-top: 0; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 1.25rem;
+  font-size: 14px; color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  user-select: none;
+}
+.nav-item:hover       { background: var(--surface2); color: var(--text); }
+.nav-item.active      { background: var(--accent-glow); color: var(--text); border-left-color: var(--accent); }
+.nav-item .nav-icon   { font-size: 14px; width: 16px; text-align: center; flex-shrink: 0; }
+
+.nav-count {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--surface3);
+  color: var(--text2);
+  padding: 1px 7px; border-radius: 99px;
+}
+.nav-item.active .nav-count { background: var(--accent); color: #fff; }
+
+
+/* ── 8. CONTENT / VIEWS ────────────────────────────── */
+.content       { flex: 1; overflow-y: auto; padding: 2rem; }
+.view          { display: none; }
+.view.active   { display: block; }
+
+.page-header {
+  display: flex; align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+}
+.page-title { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+.page-sub   { font-size: 13px; color: var(--text2); margin-top: 3px; }
+
+
+/* ── 9. BUTTONS ────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px; border-radius: var(--radius);
+  font-family: var(--font); font-size: 14px; font-weight: 500;
+  cursor: pointer; border: none;
+  transition: all 0.15s; white-space: nowrap;
+}
+.btn-primary       { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-ghost         { background: var(--surface2); color: var(--text2); border: 1px solid var(--border); }
+.btn-ghost:hover   { color: var(--text); border-color: var(--border2); }
+.btn-green         { background: var(--green-bg); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.btn-green:hover   { background: var(--green); color: #fff; }
+
+.icon-btn {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--surface3);
+  border: none; cursor: pointer;
+  color: var(--text2); font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.icon-btn:hover        { background: var(--border2); color: var(--text); }
+.icon-btn.danger:hover { background: var(--red-bg); color: var(--red); }
+
+
+/* ── 10. STAT CARDS ────────────────────────────────── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px;
+  margin-bottom: 1.75rem;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+}
+.stat-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.stat-val   { font-size: 28px; font-weight: 600; letter-spacing: -1px; }
+.stat-card.s-total .stat-val   { color: var(--text); }
+.stat-card.s-done  .stat-val   { color: var(--green); }
+.stat-card.s-active .stat-val  { color: var(--amber); }
+.stat-card.s-pending .stat-val { color: var(--blue); }
+
+
+/* ── 11. PROGRESS BAR ──────────────────────────────── */
+.progress-wrap { margin-bottom: 1.75rem; }
+.progress-label {
+  display: flex; justify-content: space-between;
+  font-size: 12px; color: var(--text2); margin-bottom: 8px;
+}
+.progress-bar  { height: 6px; background: var(--surface3); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.4s ease; }
+
+
+/* ── 12. FILTERS & SEARCH ──────────────────────────── */
+.filters {
+  display: flex; align-items: center;
+  gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap;
+}
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 13px; border-radius: 99px; font-size: 13px;
+  cursor: pointer; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text2);
+  transition: all 0.15s; user-select: none;
+}
+.filter-chip:hover       { border-color: var(--border2); color: var(--text); }
+.filter-chip.active      { background: var(--accent); color: #fff; border-color: var(--accent); }
+.filter-chip.active i    { color: #fff !important; }
+
+.search-wrap         { margin-left: auto; position: relative; }
+.search-wrap input {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text); font-family: var(--font); font-size: 13px;
+  padding: 6px 12px 6px 32px;
+  border-radius: 99px; outline: none; width: 180px;
+  transition: all 0.15s;
+}
+.search-wrap input:focus       { border-color: var(--accent); width: 220px; }
+.search-wrap input::placeholder { color: var(--text3); }
+.search-icon {
+  position: absolute; left: 10px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text3); font-size: 13px;
+}
+
+
+/* ── 13. TASK CARDS ────────────────────────────────── */
+.task-list { display: flex; flex-direction: column; gap: 8px; }
+
+.task-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  display: flex; align-items: flex-start; gap: 14px;
+  transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.task-card::before        { content: ''; position: absolute; left:0; top:0; bottom:0; width:3px; }
+.task-card.priority-high::before   { background: var(--red); }
+.task-card.priority-medium::before { background: var(--amber); }
+.task-card.priority-low::before    { background: var(--green); }
+.task-card:hover          { border-color: var(--border2); background: var(--surface2); }
+
+.task-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--border2);
+  flex-shrink: 0; margin-top: 2px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; font-size: 11px; color: transparent;
+}
+.task-check:hover           { border-color: var(--green); color: var(--green); }
+.task-card.done .task-check { background: var(--green); border-color: var(--green); color: #fff; }
+
+.task-body  { flex: 1; min-width: 0; }
+.task-name  {
+  font-size: 14px; font-weight: 500; color: var(--text);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 6px;
+}
+.task-card.done .task-name { color: var(--text3); text-decoration: line-through; }
+.task-meta  { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.task-desc  {
+  font-size: 12px; color: var(--text2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 360px;
+}
+
+.task-right   { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.task-dates   { text-align: right; }
+.task-date    { font-family: var(--mono); font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px; }
+.task-date.start   { color: var(--blue); }
+.task-date.done-at { color: var(--green); }
+.task-date i  { font-size: 10px; }
+
+.task-actions         { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+.task-card:hover .task-actions { opacity: 1; }
+
+/* WhatsApp send button inside task card */
+.btn-wa {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 99px;
+  font-size: 11px; font-weight: 500; cursor: pointer;
+  background: rgba(37,211,102,0.12);
+  color: #25d366;
+  border: 1px solid rgba(37,211,102,0.25);
+  transition: all 0.15s;
+  text-decoration: none;
+}
+.btn-wa:hover { background: #25d366; color: #fff; }
+
+/* Member tag */
+.member-tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--text2);
+}
+.member-avatar {
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+
+
+/* ── 14. BADGES ────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 99px;
+  font-size: 11px; font-weight: 500;
+}
+.badge-green { background: var(--green-bg); color: var(--green); }
+.badge-amber { background: var(--amber-bg); color: var(--amber); }
+.badge-blue  { background: var(--blue-bg);  color: var(--blue); }
+.badge-red   { background: var(--red-bg);   color: var(--red); }
+.badge-gray  { background: var(--surface3); color: var(--text2); }
+
+
+/* ── 15. MEMBER CARDS ──────────────────────────────── */
+.member-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.member-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  transition: border-color 0.2s;
+}
+.member-card:hover { border-color: var(--border2); }
+
+.mc-top { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+.mc-avatar {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.mc-info          { flex: 1; min-width: 0; }
+.mc-name          { font-size: 15px; font-weight: 600; letter-spacing: -0.2px; }
+.mc-username      { font-size: 12px; color: var(--text2); font-family: var(--mono); margin-top: 1px; }
+
+.mc-stats {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 8px; margin-bottom: 1rem;
+}
+.mc-stat          { text-align: center; }
+.mc-stat-val      { font-size: 18px; font-weight: 600; letter-spacing: -0.5px; }
+.mc-stat-lbl      { font-size: 10px; color: var(--text3); margin-top: 1px; }
+
+.mc-last-seen     { font-size: 11px; color: var(--text3); display: flex; align-items: center; gap: 5px; margin-bottom: 1rem; }
+.mc-last-seen i   { color: var(--text3); }
+.mc-online        { color: var(--green) !important; }
+
+.mc-progress      { height: 4px; background: var(--surface3); border-radius: 99px; overflow: hidden; }
+.mc-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.4s; }
+
+.mc-footer { display: flex; gap: 8px; margin-top: 1rem; align-items: center; }
+.mc-wa-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: var(--radius);
+  font-size: 12px; font-weight: 500; cursor: pointer;
+  background: rgba(37,211,102,0.1);
+  color: #25d366;
+  border: 1px solid rgba(37,211,102,0.2);
+  transition: all 0.15s; text-decoration: none;
+}
+.mc-wa-btn:hover  { background: #25d366; color: #fff; }
+
+.mc-delete-btn {
+  margin-left: auto;
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  background: transparent;
+  border: 1px solid var(--border);
+  cursor: pointer; color: var(--text3); font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.mc-delete-btn:hover { background: var(--red-bg); color: var(--red); border-color: var(--red-bg); }
+
+
+/* ── 16. EMPTY STATE ───────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 4rem 2rem;
+  color: var(--text3); font-size: 14px;
+  border: none;
+}
+.empty-state .empty-icon  { font-size: 48px; color: var(--surface3); margin-bottom: 1.25rem; }
+.empty-state .empty-title { font-size: 16px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+.empty-state .empty-msg   { font-size: 13px; color: var(--text3); }
+
+
+/* ── 17. ACTIVITY LOG ──────────────────────────────── */
+.activity-day         { margin-bottom: 2rem; }
+.activity-day-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text3);
+  margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.activity-day-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.activity-list        { display: flex; flex-direction: column; }
+.activity-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 0.75rem 0; border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: none; }
+
+.activity-dot         { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.dot-green            { background: var(--green); }
+.dot-blue             { background: var(--blue); }
+.dot-amber            { background: var(--amber); }
+.dot-red              { background: var(--red); }
+
+.activity-content     { flex: 1; }
+.activity-text        { font-size: 13px; color: var(--text); line-height: 1.5; }
+.activity-text strong { font-weight: 500; }
+.activity-time        { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
+
+
+/* ── 18. MODAL / FORM ──────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  width: 500px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+  transform: translateY(12px);
+  transition: transform 0.2s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+
+.modal-header {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.modal-title { font-size: 18px; font-weight: 600; letter-spacing: -0.4px; }
+
+.form-group   { margin-bottom: 1rem; }
+.form-label {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 600; color: var(--text2);
+  letter-spacing: 0.5px; margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font); font-size: 14px;
+  padding: 9px 12px;
+  border-radius: var(--radius); outline: none;
+  transition: border-color 0.15s;
+}
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus  { border-color: var(--accent); }
+.form-input::placeholder,
+.form-textarea::placeholder { color: var(--text3); }
+.form-select option   { background: var(--surface2); }
+.form-textarea        { resize: vertical; min-height: 80px; }
+.form-row             { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.modal-footer         { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.5rem; }
+
+
+/* ── 19. TOAST ─────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--surface3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  padding: 10px 20px;
+  border-radius: 99px;
+  font-size: 13px; font-weight: 500;
+  opacity: 0; pointer-events: none;
+  transition: all 0.3s;
+  z-index: 200; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+
+/* ── 20. RESPONSIVE ────────────────────────────────── */
+@media (max-width: 768px) {
+  header { padding: 0 1rem; height: auto; flex-wrap: wrap; }
+
+  .date-badge {
+    order: 3;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    padding: 5px 1rem;
+  }
+
+  .logo        { order: 1; padding: 10px 0; }
+  .header-meta { order: 2; margin-left: auto; padding: 10px 0; }
+  .btn-label   { display: none; }
+  .btn-primary { padding: 9px 12px; }
+  .member-greeting { display: none; }
+
+  .sidebar     { display: none; }
+  .content     { padding: 1rem; }
+
+  .stats-row   { grid-template-columns: repeat(2,1fr); }
+  .form-row    { grid-template-columns: 1fr; }
+  .task-actions { opacity: 1; }
+  .task-desc   { max-width: 140px; }
+
+  .search-wrap       { margin-left: 0; width: 100%; }
+  .search-wrap input { width: 100%; }
+
+  .member-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .task-name { font-size: 13px; }
+}
