@@ -1,30 +1,3 @@
-/* ════════════════════════════════════════════════════════
-   TASKFLOW v2 — style.css
-   Sections:
-   1.  RESET & VARIABLES
-   2.  BASE
-   3.  SCREENS
-   4.  LOADING OVERLAY
-   5.  LOGIN
-   6.  HEADER
-   7.  SIDEBAR
-   8.  CONTENT / VIEWS
-   9.  BUTTONS
-   10. STAT CARDS
-   11. PROGRESS BAR
-   12. FILTERS & SEARCH
-   13. TASK CARDS
-   14. BADGES
-   15. MEMBER CARDS
-   16. EMPTY STATE
-   17. ACTIVITY LOG
-   18. MODAL / FORM
-   19. TOAST
-   20. RESPONSIVE
-════════════════════════════════════════════════════════ */
-
-
-/* ── 1. RESET & VARIABLES ──────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -55,7 +28,6 @@
 }
 
 
-/* ── 2. BASE ───────────────────────────────────────── */
 body {
   font-family: var(--font);
   background: var(--bg);
@@ -71,12 +43,10 @@ input[type="date"],
 input[type="time"] { color-scheme: dark; }
 
 
-/* ── 3. SCREENS ────────────────────────────────────── */
 .screen              { display: none; min-height: 100vh; flex-direction: column; }
 .screen.active       { display: flex; }
 
 
-/* ── 4. LOADING OVERLAY ────────────────────────────── */
 .loading-overlay {
   position: fixed; inset: 0; z-index: 999;
   background: var(--bg);
@@ -95,7 +65,6 @@ input[type="time"] { color-scheme: dark; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 
-/* ── 5. LOGIN ──────────────────────────────────────── */
 .login-wrap {
   flex: 1;
   display: flex;
@@ -169,7 +138,6 @@ input[type="time"] { color-scheme: dark; }
 .btn-full { width: 100%; justify-content: center; margin-top: 0.5rem; }
 
 
-/* ── 6. HEADER ─────────────────────────────────────── */
 header {
   padding: 0 2rem;
   height: 60px;
@@ -216,7 +184,6 @@ header {
 .btn-label { display: inline; }
 
 
-/* ── 7. SIDEBAR ────────────────────────────────────── */
 .main    { flex: 1; display: flex; overflow: hidden; }
 
 .sidebar {
@@ -263,7 +230,6 @@ header {
 .nav-item.active .nav-count { background: var(--accent); color: #fff; }
 
 
-/* ── 8. CONTENT / VIEWS ────────────────────────────── */
 .content       { flex: 1; overflow-y: auto; padding: 2rem; }
 .view          { display: none; }
 .view.active   { display: block; }
@@ -277,7 +243,6 @@ header {
 .page-sub   { font-size: 13px; color: var(--text2); margin-top: 3px; }
 
 
-/* ── 9. BUTTONS ────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 9px 16px; border-radius: var(--radius);
@@ -305,7 +270,6 @@ header {
 .icon-btn.danger:hover { background: var(--red-bg); color: var(--red); }
 
 
-/* ── 10. STAT CARDS ────────────────────────────────── */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4,1fr);
@@ -326,7 +290,6 @@ header {
 .stat-card.s-pending .stat-val { color: var(--blue); }
 
 
-/* ── 11. PROGRESS BAR ──────────────────────────────── */
 .progress-wrap { margin-bottom: 1.75rem; }
 .progress-label {
   display: flex; justify-content: space-between;
@@ -336,7 +299,6 @@ header {
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--green)); border-radius: 99px; transition: width 0.4s ease; }
 
 
-/* ── 12. FILTERS & SEARCH ──────────────────────────── */
 .filters {
   display: flex; align-items: center;
   gap: 8px; margin-bottom: 1.25rem; flex-wrap: wrap;
@@ -369,7 +331,6 @@ header {
 }
 
 
-/* ── 13. TASK CARDS ────────────────────────────────── */
 .task-list { display: flex; flex-direction: column; gap: 8px; }
 
 .task-card {
@@ -420,7 +381,6 @@ header {
 .task-actions         { display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
 .task-card:hover .task-actions { opacity: 1; }
 
-/* WhatsApp send button inside task card */
 .btn-wa {
   display: inline-flex; align-items: center; gap: 5px;
   padding: 3px 9px; border-radius: 99px;
@@ -433,7 +393,6 @@ header {
 }
 .btn-wa:hover { background: #25d366; color: #fff; }
 
-/* Member tag */
 .member-tag {
   display: inline-flex; align-items: center; gap: 5px;
   font-size: 11px; color: var(--text2);
@@ -445,7 +404,6 @@ header {
 }
 
 
-/* ── 14. BADGES ────────────────────────────────────── */
 .badge {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 2px 8px; border-radius: 99px;
@@ -458,7 +416,6 @@ header {
 .badge-gray  { background: var(--surface3); color: var(--text2); }
 
 
-/* ── 15. MEMBER CARDS ──────────────────────────────── */
 .member-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -524,7 +481,6 @@ header {
 .mc-delete-btn:hover { background: var(--red-bg); color: var(--red); border-color: var(--red-bg); }
 
 
-/* ── 16. EMPTY STATE ───────────────────────────────── */
 .empty-state {
   text-align: center; padding: 4rem 2rem;
   color: var(--text3); font-size: 14px;
@@ -535,7 +491,6 @@ header {
 .empty-state .empty-msg   { font-size: 13px; color: var(--text3); }
 
 
-/* ── 17. ACTIVITY LOG ──────────────────────────────── */
 .activity-day         { margin-bottom: 2rem; }
 .activity-day-label {
   font-size: 10px; font-weight: 600; letter-spacing: 1px;
@@ -564,7 +519,6 @@ header {
 .activity-time        { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-top: 2px; display: flex; align-items: center; gap: 4px; }
 
 
-/* ── 18. MODAL / FORM ──────────────────────────────── */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 100;
   background: rgba(0,0,0,0.7);
@@ -625,7 +579,6 @@ header {
 .modal-footer         { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.5rem; }
 
 
-/* ── 19. TOAST ─────────────────────────────────────── */
 .toast {
   position: fixed; bottom: 1.5rem; left: 50%;
   transform: translateX(-50%) translateY(20px);
@@ -642,7 +595,6 @@ header {
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 
-/* ── 20. RESPONSIVE ────────────────────────────────── */
 @media (max-width: 768px) {
   header { padding: 0 1rem; height: auto; flex-wrap: wrap; }
 
