@@ -382,6 +382,17 @@
   <div class="spinner"></div>
 </div>
 
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "c671b2ea-9605-4ac1-b2c9-b9f79cc75f95",
+      allowLocalhostAsSecure: true 
+    });
+  });
+</script>
+
 <script src="script.js"></script>
 </body>
 </html>
